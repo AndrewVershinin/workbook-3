@@ -1,18 +1,36 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class PayrollCalculatorApp {
     public static void main(String[] args) {
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the name of the employee file to process: ");
+        String inputFileName = scanner.nextLine();
+
+        System.out.print("Enter the name of the payroll file to create: ");
+        String outputFileName = scanner.nextLine();
+
         try {
-            FileReader fileReader = new FileReader("src/main/resources/employees.csv");
+            FileReader fileReader = new FileReader("src/main/resources/" + inputFileName);
             BufferedReader bufReader = new BufferedReader(fileReader);
-            bufReader.readLine();
+
+            FileWriter fileWriter = new FileWriter("src/main/resources/" + outputFileName);
+            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+
+            // header for a payroll file
+            bufWriter.write("id|name|gross pay");
+            bufWriter.newLine();
+
+            bufReader.readLine(); // skip header
+
             String input;
+
             System.out.println("ID|name|Gross pay");
+
             while ((input = bufReader.readLine()) != null) {
                 String[] parts = input.split("\\|");
                 int id = Integer.parseInt(parts[0]);
@@ -20,8 +38,15 @@ public class PayrollCalculatorApp {
                 double hoursWork = Double.parseDouble(parts[2]);
                 double payRate = Double.parseDouble(parts[3]);
                 Employee employ = new Employee(id, name, hoursWork, payRate);
-                System.out.printf("%d|%s|%.2f|\n", employ.getEmployeeId(), employ.getName(), employ.getGrossPay());
+
+                bufWriter.write(String.format("%d|%s|%.2f", id, name, employ.getGrossPay()));
+                bufWriter.newLine();
             }
+
+            bufWriter.close();
+            bufReader.close();
+
+            System.out.println("The payroll file was created");
         } catch (IOException e) {
             e.printStackTrace();
         }
