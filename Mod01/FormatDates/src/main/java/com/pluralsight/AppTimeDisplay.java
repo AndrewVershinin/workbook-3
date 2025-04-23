@@ -1,8 +1,13 @@
 package com.pluralsight;
-
+// Imports the LocalDateTime class, which represents the current date and time without any time zone information.
 import java.time.LocalDateTime;
+// Imports the DateTimeFormatter class, which is used to format or parse date and time values into readable strings like "23 Apr 2025" or "15:45"
 import java.time.format.DateTimeFormatter;
+// Imports the ZonedDateTime class, which represents a date and time with a time zone, like GMT, PST, etc.
+//Useful when you want to display or calculate time in different zones.
 import java.time.ZonedDateTime;
+// Imports the ZoneId class, which is used to specify a time zone, such as "GMT" or "America/New_York".
+//Used with ZonedDateTime.now(ZoneId.of("GMT")) to get current time in a specific zone.
 import java.time.ZoneId;
 
 public class AppTimeDisplay {
